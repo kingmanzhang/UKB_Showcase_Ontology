@@ -21,13 +21,21 @@ public class OntologizeCommand implements Callable<Integer> {
 //    @CommandLine.Parameters(index = "0", description = "The input file to ontologize.")
 //    private File inputFile;
 //
-    @CommandLine.Option(names = {"-o", "--out_dir"}, description = "The " +
-            "output folder path")
-    private File outDir;
+    @CommandLine.Option(names = {"-o", "--out"}, description = "The " +
+            "output file path for the ontology Turtle file")
+    private File outFile;
 
     @Override
     public Integer call() throws Exception {
 
+        System.out.println(outFile.getAbsolutePath());
+        run(outFile);
+
+
+        return 0; // Success
+    }
+
+    private void run(File outFile) throws IOException {
         final String UKB_NS = "https://biobank.ndph.ox.ac.uk/showcase#";
         OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
 
@@ -199,11 +207,6 @@ public class OntologizeCommand implements Callable<Integer> {
         model.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
 
 
-        model.write(new FileWriter(outDir.getAbsolutePath() + "/" +
-                        "ukb_showcase_ontology.ttl"),
-                "TTL");
-
-
-        return 0; // Success
+        model.write(new FileWriter(outFile), "TTL");
     }
 }
