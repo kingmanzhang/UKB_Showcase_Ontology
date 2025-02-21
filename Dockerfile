@@ -19,7 +19,8 @@ FROM openjdk:11
 WORKDIR /app
 
 # Copy the JAR file from the build stage to the current directory
-COPY --from=build /app/target/*-jar-with-dependencies.jar app.jar
+#COPY --from=build /app/target/*-jar-with-dependencies.jar app.jar
+COPY --from=build /app/target/*-shaded.jar app.jar
 
 # Command to run the JAR file
 CMD ["java", "-jar", "app.jar", "ontologize", "-o", "/app/data/ontology/ukb_showcase_ontology.ttl"]
